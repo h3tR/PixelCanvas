@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+ext{
+    lwjglVersion = "3.3.1"
+    Natives = "natives-linux"
+    jomlVersion = "1.10.5"
+    imguiVersion = "1.86.10"
+    gsonVersion = "2.10.1"
+}
+
+dependencies {
+    implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+    implementation "org.joml:joml:${jomlVersion}"
+    implementation "org.lwjgl:lwjgl"
+    implementation "org.lwjgl:lwjgl-assimp"
+    implementation "org.lwjgl:lwjgl-bgfx"
+    implementation "org.lwjgl:lwjgl-glfw"
+    implementation "org.lwjgl:lwjgl-nanovg"
+    implementation "org.lwjgl:lwjgl-nuklear"
+    implementation "org.lwjgl:lwjgl-openal"
+    implementation "org.lwjgl:lwjgl-opengl"
+    implementation "org.lwjgl:lwjgl-par"
+    implementation "org.lwjgl:lwjgl-stb"
+    implementation "org.lwjgl:lwjgl-vulkan"
+    runtimeOnly "org.lwjgl:lwjgl::$Natives"
+    runtimeOnly "org.lwjgl:lwjgl-assimp::$Natives"
+    runtimeOnly "org.lwjgl:lwjgl-bgfx::$Natives"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$Natives"
+    runtimeOnly "org.lwjgl:lwjgl-nanovg::$Natives"
+    runtimeOnly "org.lwjgl:lwjgl-nuklear::$Natives"
+    runtimeOnly "org.lwjgl:lwjgl-openal::$Natives"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$Natives"
+    runtimeOnly "org.lwjgl:lwjgl-par::$Natives"
+    runtimeOnly "org.lwjgl:lwjgl-stb::$Natives"
+
+    implementation "io.github.spair:imgui-java-binding:$imguiVersion"
+    implementation "io.github.spair:imgui-java-lwjgl3:$imguiVersion"
+    implementation "io.github.spair:imgui-java-$Natives-ft:$imguiVersion"
+    implementation "io.github.spair:imgui-java-$Natives:$imguiVersion"
+}

@@ -1,14 +1,14 @@
 package ml.jozefpeeterslaan72wuustwezel.jade;
 
 import ml.jozefpeeterslaan72wuustwezel.graphics.FramePlotter2D;
-import org.joml.Random;
-import org.joml.Vector2i;
-import org.joml.Vector3f;
+import org.joml.*;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryUtil;
+
+import java.lang.Math;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -53,9 +53,10 @@ public class Window {
 
         //Config
         GLFW.glfwDefaultWindowHints();
-        GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE,GLFW.GLFW_FALSE);
+        GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE,GLFW.GLFW_TRUE);
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE,GLFW.GLFW_FALSE);
         GLFW.glfwWindowHint(GLFW.GLFW_MAXIMIZED,GLFW.GLFW_FALSE);
+        //GLFW.glfwSetWindowIcon(glfwWindow,...);
 
         //Create Window
         glfwWindow = GLFW.glfwCreateWindow(Dimensions.x, Dimensions.y, Title, MemoryUtil.NULL,MemoryUtil.NULL);
@@ -85,24 +86,23 @@ public class Window {
         float FrameStarted = (float)GLFW.glfwGetTime();
         float FrameEnded = FrameStarted;
         float deltaTime = -1.0f;
-
-        FramePlotter2D plotter2D = new FramePlotter2D(Dimensions);
         Random rand = new Random();
+        FramePlotter2D plotter2D = new FramePlotter2D(Dimensions);
 
-
-
-
-        GLFW.glfwSwapBuffers(glfwWindow);
+       float i = 0;
+       float factor = .2f;
         while(!GLFW.glfwWindowShouldClose(glfwWindow)){
             //Poll Events
             GLFW.glfwPollEvents();
             //glClear(GL_COLOR_BUFFER_BIT);
 
-            plotter2D.plotTriangle(new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector3f(1,0,0));
-            plotter2D.plotTriangle(new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector3f(0,1,0));
-            plotter2D.plotTriangle(new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector3f(0,0,1));
+
+            plotter2D.fillTriangle(new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector3f(1,0,0));
+            plotter2D.fillTriangle(new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector3f(0,1,0));
+            plotter2D.fillTriangle(new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector2i(rand.nextInt(Dimensions.x)-Dimensions.x/2,rand.nextInt(Dimensions.y)-Dimensions.y/2),new Vector3f(0,0,1));
 
             plotter2D.draw();
+
 
             GLFW.glfwSwapBuffers(glfwWindow);
 
@@ -111,6 +111,9 @@ public class Window {
             FrameStarted = FrameEnded;
             if(KeyListener.keyDown(32)) //space
                 System.out.println(1f/deltaTime+" FPS");
+            i+=factor;
+            if(Math.abs(i)>5)
+                factor*=-1;
         }
     }
 }

@@ -3,12 +3,12 @@ package ml.jozefpeeterslaan72wuustwezel.graphics;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-public class Renderer3D {
+public class Camera3D {
     public Vector3f camPos;
     public Vector3f camRot;
     Vector3f DisplaySurfaceRelativePosition = new Vector3f(0, 0, 1);
 
-    public Renderer3D(Vector3f camPos, Vector3f camRot) {
+    public Camera3D(Vector3f camPos, Vector3f camRot) {
         this.camPos = camPos;
         this.camRot = camRot;
     }

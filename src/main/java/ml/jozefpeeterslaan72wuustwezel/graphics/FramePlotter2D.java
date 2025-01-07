@@ -1,8 +1,6 @@
 package ml.jozefpeeterslaan72wuustwezel.graphics;
 
-import ml.jozefpeeterslaan72wuustwezel.wrapper.ImmutablePair;
 import org.joml.Vector2d;
-import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
@@ -39,8 +37,7 @@ public class FramePlotter2D {
 
     public void plotLine(Vector2i p1,Vector2i p2, Vector3f color) {
         List<Vector2i> Pixels = getLineData(p1,p2);
-        for (int i = 0; i < Pixels.size(); i++)
-            plotPixel(Pixels.get(i), color);
+        for (Vector2i pixel : Pixels) plotPixel(pixel, color);
     }
 
     public void plotTriangle(Vector2i p1, Vector2i p2, Vector2i p3, Vector3f color) {
@@ -64,12 +61,11 @@ public class FramePlotter2D {
         int[] minY = new int[dx];
         Arrays.fill(minY, dimensions.y/2);
 
-        for (int i = 0; i < filteredEdges.size(); i++){
-            Vector2i pixel = filteredEdges.get(i);
-            if(maxY[pixel.x-minX]<pixel.y)
-                maxY[pixel.x-minX]=pixel.y;
-            if(minY[pixel.x-minX]>pixel.y)
-                minY[pixel.x-minX]=pixel.y;
+        for (Vector2i pixel : filteredEdges) {
+            if (maxY[pixel.x - minX] < pixel.y)
+                maxY[pixel.x - minX] = pixel.y;
+            if (minY[pixel.x - minX] > pixel.y)
+                minY[pixel.x - minX] = pixel.y;
         }
         for (int x = minX; x < maxX; x++)
             for (int y = minY[x-minX]; y < maxY[x-minX]; y++)
@@ -90,6 +86,24 @@ public class FramePlotter2D {
         for (int x = 0; x < size.x; x++)
             for (int y = 0; y < size.y; y++)
                 plotPixel(new Vector2i(p1.x+x,p2.x+x), color);
+    }
+
+    public void plotCircle(Vector2i center, int radius, Vector3f color) {
+        for (int i = -radius; i < radius; i++) {
+            plotPixel(new Vector2i(i,(int)(Math.sqrt(1-Math.pow(i/(float)radius,2))*radius)).add(center),color);
+            plotPixel(new Vector2i(i,(int)(-Math.sqrt(1-Math.pow(i/(float)radius,2))*radius)).add(center),color);
+            plotPixel(new Vector2i((int)(Math.sqrt(1-Math.pow(i/(float)radius,2))*radius),i).add(center),color);
+            plotPixel(new Vector2i((int)(-Math.sqrt(1-Math.pow(i/(float)radius,2))*radius),i).add(center),color);
+        }
+    }
+
+    public void fillCircle(Vector2i center, int radius, Vector3f color) {
+        for (int i = -radius; i < radius; i++) {
+            Vector2i v1 = new Vector2i(i,(int)(Math.sqrt(1-Math.pow(i/(float)radius,2))*radius)).add(center);
+            Vector2i v2 = new Vector2i(i,-(int)(Math.sqrt(1-Math.pow(i/(float)radius,2))*radius)).add(center);
+            for (int y = v2.y; y < v1.y; y++)
+                plotPixel(new Vector2i(center.x+i,y),color);
+        }
     }
 
     public void plotFunction(Function<Double,Double> f, Vector2d zoomFactor, Vector3f color){
@@ -131,5 +145,9 @@ public class FramePlotter2D {
         for (int x = 0; x < Math.abs(dx); x++)
             PixelList.add(new Vector2i(x*xsign,xsign*x*dy/dx).add(p1));
         return PixelList;
+    }
+
+    public Vector2i getDimensions(){
+        return new Vector2i(dimensions);
     }
 }

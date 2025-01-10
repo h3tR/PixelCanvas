@@ -46,4 +46,6 @@ dependencies {
     implementation "io.github.spair:imgui-java-lwjgl3:$imguiVersion"
     implementation "io.github.spair:imgui-java-$Natives-ft:$imguiVersion"
     implementation "io.github.spair:imgui-java-$Natives:$imguiVersion"
+
+    implementation "de.javagl:obj:0.4.0"
 }
